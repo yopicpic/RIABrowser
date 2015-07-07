@@ -16,6 +16,11 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+*.DS_Store
+
+#framework
+RealmSwift.framework
+Realm.framework
 
 # CocoaPods
 #

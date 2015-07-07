@@ -2,8 +2,8 @@
 //  RIABrowserTests.swift
 //  RIABrowserTests
 //
-//  Created by Yoshiyuki Tanaka on 2015/05/03.
-//  Copyright (c) 2015年 Yoshiyuki Tanaka. All rights reserved.
+//  Created by Yoshiyuki Tanaka on 2015/05/16.
+//  Copyright (c) 2015 Yoshiyuki Tanaka. All rights reserved.
 //
 
 import UIKit

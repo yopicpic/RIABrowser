@@ -1,9 +1,8 @@
 //
 //  AppDelegate.swift
-//  RIABrowser
 //
-//  Created by Yoshiyuki Tanaka on 2015/05/03.
-//  Copyright (c) 2015年 Yoshiyuki Tanaka. All rights reserved.
+//  Created by Yoshiyuki Tanaka on 2015/05/16.
+//  Copyright (c) 2015 Yoshiyuki Tanaka. All rights reserved.
 //
 
 import UIKit
@@ -15,7 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    // Override point for customization after application launch.
+    RealmInAppBrowser.registerClass(User)
+    RealmInAppBrowser.registerClass(Book)
     return true
   }
 
