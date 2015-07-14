@@ -98,70 +98,69 @@ class ObjectExtractor {
   private func convertToRIAProperty(object: Object, name: String,type :PropertyType) -> RIAProperty {
     switch type {
     case .String:
-      return stringToString(object, name: name, type: type)
+      return stringToString(object, name: name)
     case .Int:
-      return intToString(object, name: name, type: type)
+      return intToString(object, name: name)
     case .Float:
-      return floatToString(object, name: name, type: type)
+      return floatToString(object, name: name)
     case .Double:
-      return doubleToString(object, name: name, type: type)
+      return doubleToString(object, name: name)
     case .Bool:
-      return boolToString(object, name: name, type: type)
+      return boolToString(object, name: name)
     case .Date:
-      return dateToString(object, name: name, type: type)
+      return dateToString(object, name: name)
     case .Data:
-      return dataToString(object, name: name, type: type)
+      return dataToString(object, name: name)
     case .Object:
-      return objectToString(object, name: name, type: type)
+      return objectToString(object, name: name)
     case .Array:
-      return arrayToString(object, name: name, type: type)
+      return arrayToString(object, name: name)
     case .Any:
-      return anyToString(object, name: name, type: type)
+      return anyToString(object, name: name)
     }
   }
   
-  private func stringToString(object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+  private func stringToString(object: Object, name: String) -> RIAStringProperty {
     let value = object.valueForKey(name) as! String
     return RIAStringProperty(type: "String", name: name, stringValue: value)
   }
   
-  private func intToString(object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+  private func intToString(object: Object, name: String) -> RIAStringProperty {
     let value = object.valueForKey(name) as! Int
     return RIAStringProperty(type: "Int", name: name, stringValue: String(value))
   }
   
-  private func floatToString(object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+  private func floatToString(object: Object, name: String) -> RIAStringProperty {
     let value = object.valueForKey(name) as! Float
     return RIAStringProperty(type: "Float", name: name, stringValue: "\(value)")
   }
   
-  private func doubleToString(object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+  private func doubleToString(object: Object, name: String) -> RIAStringProperty {
     let value = object.valueForKey(name) as! Double
     return RIAStringProperty(type: "Double", name: name, stringValue: "\(value)")
   }
   
-  private func boolToString(object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+  private func boolToString(object: Object, name: String) -> RIAStringProperty {
     let value = object.valueForKey(name) as! Bool
     return RIAStringProperty(type: "Double", name: name, stringValue: "\(value)")
   }
   
-  private func dateToString(object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+  private func dateToString(object: Object, name: String) -> RIAStringProperty {
     let value = object.valueForKey(name) as! NSDate
     return RIAStringProperty(type: "Date", name: name, stringValue: "\(value)")
   }
   
-  private func dataToString(object: Object, name: String,type :PropertyType) -> RIAProperty {
+  private func dataToString(object: Object, name: String) -> RIAProperty {
     let value = object.valueForKey(name) as! NSData
     return RIADataProperty(type: "Data", name: name, dataValue: value)
   }
 
-  
-  private func objectToString(object: Object, name: String,type :PropertyType) -> RIAObjectProperty {
+  private func objectToString(object: Object, name: String) -> RIAObjectProperty {
     let value = object.valueForKey(name) as! Object
     return RIAObjectProperty(type: "Object", name: name, objectValue:convertToRIAObject(value))
   }
   
-  private func arrayToString(object: Object, name: String,type :PropertyType) -> RIAArrayProperty {
+  private func arrayToString(object: Object, name: String) -> RIAArrayProperty {
     var objects:[Object]?
     for (className, extractor) in arrayPropertyExtractors {
       objects = extractor(object: object, name: name)
@@ -180,7 +179,7 @@ class ObjectExtractor {
     return RIAArrayProperty(type: "Object", name: name, arrayValue:riaObjects!)
   }
 
-  private func anyToString (object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+  private func anyToString (object: Object, name: String) -> RIAStringProperty {
     return RIAStringProperty(type: "Any", name: name, stringValue: "Any type is not supported")
   }
 }
