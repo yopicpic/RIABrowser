@@ -116,7 +116,7 @@ class ObjectExtractor {
     case .Array:
       return arrayToString(object, name: name, type: type)
     case .Any:
-      return RIAProperty(type: "", name: "", value: "")
+      return anyToString(object, name: name, type: type)
     }
   }
   
@@ -178,5 +178,9 @@ class ObjectExtractor {
       riaObjects = [RIAObject]()
     }
     return RIAArrayProperty(type: "Object", name: name, arrayValue:riaObjects!)
+  }
+
+  private func anyToString (object: Object, name: String,type :PropertyType) -> RIAStringProperty {
+    return RIAStringProperty(type: "Any", name: name, stringValue: "Any type is not supported")
   }
 }
