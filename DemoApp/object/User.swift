@@ -15,10 +15,10 @@ class User : Object {
   dynamic var height:Float = 172.4
   dynamic var weight:Double = 60.2
   dynamic var birthDay = NSDate()
-  dynamic var profileImage = NSData(data: UIImagePNGRepresentation(UIImage(named: "sample_image")))
+  dynamic var profileImage = NSData(data: UIImagePNGRepresentation(UIImage(named: "sample_image")!)!)
   dynamic var favoriteMusic = NSData()
   dynamic var hasCar = true
-  dynamic var favoriteBook = Book()
+  dynamic var favoriteBook:Book? = Book()
   let books = List<Book>()
   
   override static func primaryKey() -> String? {

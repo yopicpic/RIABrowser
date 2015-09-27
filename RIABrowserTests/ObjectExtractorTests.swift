@@ -14,21 +14,13 @@ import UIKit
 class ObjectExtractorTests: XCTestCase {
   
   //MARK: Helpers
-  let realmPathForTesting = "test.realm"
   var testUser:UserTest?
   
-  func deleteRealmFilesAtPath(path: String) {
-    let fileManager = NSFileManager.defaultManager()
-    fileManager.removeItemAtPath(path, error: nil)
-    let lockPath = path + ".lock"
-    fileManager.removeItemAtPath(lockPath, error: nil)
-  }
-  
   func realmPath() -> String {
-    var documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+    let documentsPath = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0] as String
     return documentsPath + "/test.reamlm"
   }
-  
+
   func setupTestObject () {
     testUser = nil
     
@@ -45,7 +37,7 @@ class ObjectExtractorTests: XCTestCase {
     components.second = 6
     let date = NSCalendar.currentCalendar().dateFromComponents(components)!
     user.birthDay = date
-    user.profileImage = NSData(data: UIImagePNGRepresentation(UIImage(named: "sample_image")))
+    user.profileImage = NSData(data: UIImagePNGRepresentation(UIImage(named: "sample_image")!)!)
     user.favoriteMusic = NSData()
     
     let book1 = BookTest()
@@ -60,11 +52,18 @@ class ObjectExtractorTests: XCTestCase {
     user.books.append(book2)
     user.books.append(book3)
     
-    let realm = Realm()
+    let realm = try! Realm()
     realm.write { () -> Void in
       realm.add(user)
     }
     testUser = user
+  }
+  
+  func deleteTestData () {
+    let realm = try! Realm()
+    realm.write { () -> Void in
+      realm.deleteAll()
+    }
   }
   
   func firstUserObjectRIAProperty (propertyName:String) -> RIAProperty? {
@@ -80,20 +79,15 @@ class ObjectExtractorTests: XCTestCase {
   
   override func setUp() {
     super.setUp()
-    deleteRealmFilesAtPath(realmPath())
-    Realm.defaultPath = realmPath()
-    
+    Realm.Configuration.defaultConfiguration.path = realmPath()
+    deleteTestData()
     setupTestObject()
   }
   
   override func tearDown() {
     super.tearDown()
-    deleteRealmFilesAtPath(realmPath())
-    
-    let realm = Realm()
-    realm.write { () -> Void in
-      realm.deleteAll()
-    }
+
+    deleteTestData()
     
     ObjectExtractor.sharedInstance.unregisterClass(UserTest)
     ObjectExtractor.sharedInstance.unregisterClass(BookTest)
@@ -130,7 +124,7 @@ class ObjectExtractorTests: XCTestCase {
     
     var result = ""
     if let stringProperty = firstUserObjectRIAProperty("age") as? RIAStringProperty {
-      result = stringProperty.value() as! String
+      result = stringProperty.value() as String
     }
     let expect = testUser!.age.description
     
@@ -142,7 +136,7 @@ class ObjectExtractorTests: XCTestCase {
     
     var result = ""
     if let stringProperty = firstUserObjectRIAProperty("height") as? RIAStringProperty {
-      result = stringProperty.value() as! String
+      result = stringProperty.value() as String
     }
     let expect = testUser!.height.description
     
@@ -154,7 +148,7 @@ class ObjectExtractorTests: XCTestCase {
     
     var result = ""
     if let stringProperty = firstUserObjectRIAProperty("weight") as? RIAStringProperty {
-      result = stringProperty.value() as! String
+      result = stringProperty.value() as String
     }
     let expect = testUser!.weight.description
     
@@ -166,7 +160,7 @@ class ObjectExtractorTests: XCTestCase {
     
     var result = ""
     if let dateProperty = firstUserObjectRIAProperty("birthDay") as? RIAStringProperty {
-      result = dateProperty.value() as! String
+      result = dateProperty.value() as String
     }
     let expect = testUser!.birthDay.description
     
@@ -202,7 +196,7 @@ class ObjectExtractorTests: XCTestCase {
     
     var result = ""
     if let boolProperty = firstUserObjectRIAProperty("hasCar") as? RIAStringProperty {
-      result = boolProperty.value() as! String
+      result = boolProperty.value() as String
     }
     let expect = testUser!.hasCar.description
     
@@ -219,12 +213,12 @@ class ObjectExtractorTests: XCTestCase {
       for  property in object.properties {
         if property.name == "name" {
           let stringProperty = property as! RIAStringProperty
-          result = stringProperty.value() as! String
+          result = stringProperty.value() as String
           break
         }
       }
     }
-    let expect = testUser!.favoriteBook.name
+    let expect = testUser!.favoriteBook?.name
 
     XCTAssertEqual(result, expect, "should convert Bool into String")
   }
@@ -237,10 +231,11 @@ class ObjectExtractorTests: XCTestCase {
     if let objectProperty = firstUserObjectRIAProperty("books") as? RIAArrayProperty {
       let objects = objectProperty.value()
       for  object in objects {
-        for  property in object.properties {
+        let riaObject = object as! RIAObject
+        for  property in riaObject.properties {
           if property.name == "name" {
             let stringProperty = property as! RIAStringProperty
-            result.append(stringProperty.value() as! String)
+            result.append(stringProperty.value() as String)
             break
           }
         }

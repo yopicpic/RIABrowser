@@ -68,7 +68,7 @@ public class RealmInAppBrowser : NSObject {
   //MARK:Internal Method
   func pressLaunchButton(sender: UIButton) {
     let storyboard = UIStoryboard(name: "RIABrowser", bundle: nil)
-    let viewController = storyboard.instantiateInitialViewController() as! UIViewController
+    let viewController = storyboard.instantiateInitialViewController()!
     targetViewController?.presentViewController(viewController, animated: true, completion: nil)
   }
   
