@@ -7,10 +7,10 @@ RIABrowser is useful for debugging of your application which used Realm Database
 ![demo](https://github.com/yopicpic/RIABrowser-DemoMovie/raw/master/RIABrowserDemoMovie.gif)
 ## Requirements
 
-- SWift 1.2
+- SWift 2.0
 - iOS 8.0 and later
-- Xcode 6.3 and later
-- Realm Swift 0.93.0 and later
+- Xcode 7.0 and later
+- Realm Swift 0.95.2
 
 ## Installation
 
