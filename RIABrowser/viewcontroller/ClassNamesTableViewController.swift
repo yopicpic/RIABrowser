@@ -20,7 +20,7 @@ class ClassNamesTableViewController :UITableViewController {
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?){
     if segue.identifier == "toObjectsTableViewController" {
-    var objectsViewController = segue.destinationViewController as! ObjectsTableViewController
+    let objectsViewController = segue.destinationViewController as! ObjectsTableViewController
       objectsViewController.className = selectedClassNames
       objectsViewController.objects = ObjectExtractor.sharedInstance.objects(selectedClassNames)
      // selectedClassNames = ""
@@ -44,7 +44,7 @@ class ClassNamesTableViewController :UITableViewController {
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("ClassNamesTableViewCell") as! UITableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier("ClassNamesTableViewCell")!
     cell.textLabel?.text = classNames[indexPath.row]
     return cell
   }

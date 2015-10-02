@@ -61,7 +61,7 @@ class ObjectsTableViewController : UITableViewController {
   
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("ObjectsTableViewCell") as! UITableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier("ObjectsTableViewCell")!
     
     let object = objects[indexPath.row]
     let properties:[RIAProperty] = object.properties

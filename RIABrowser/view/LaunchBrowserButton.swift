@@ -14,7 +14,7 @@ class LaunchBrowserButton : UIButton {
     self.init(frame:CGRectZero)
   }
   
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     setup()
   }
@@ -27,7 +27,7 @@ class LaunchBrowserButton : UIButton {
   func setup() {
     let image = UIImage(named: "LaunchBrowser")!
     setImage(image, forState:.Normal)
-    setTranslatesAutoresizingMaskIntoConstraints(false)
+    translatesAutoresizingMaskIntoConstraints = false;
    
     addConstraints([
       NSLayoutConstraint(

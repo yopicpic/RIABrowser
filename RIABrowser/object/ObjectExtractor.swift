@@ -12,7 +12,7 @@ import RealmSwift
 class ObjectExtractor {
   typealias Extractor = ()-> [RIAObject]
   typealias ArrayPropertyExtractor = (object:Object, name:String) -> [Object]?
-  var realmPath = Realm.defaultPath
+  var realmPath = Realm.Configuration.defaultConfiguration.path!
   private var classes = [String:Extractor]()
   private var arrayPropertyExtractors = [String:ArrayPropertyExtractor]()
   
@@ -24,7 +24,7 @@ class ObjectExtractor {
   }
   
   func registerClass<T:Object>(type:T.Type) {
-    var name = "\(type)".componentsSeparatedByString(".")[1]
+    let name = "\(type)".componentsSeparatedByString(".")[0]
     let extractor:Extractor = {
       var riaObjects = [RIAObject]()
       let realmSwiftObjects = self.realm.objects(type)
@@ -37,7 +37,6 @@ class ObjectExtractor {
     classes["\(name)"] = extractor
     
     let arrayPropertyExtractor:ArrayPropertyExtractor = {(object:Object, name:String) -> [Object]? in
-      var riaObjects = [Object]()
       if let value = object.valueForKey(name) as? List<T> {
         var objectList = [Object]()
         for i in 0..<value.count {
@@ -51,7 +50,7 @@ class ObjectExtractor {
   }
   
   func unregisterClass<T:Object>(type:T.Type) {
-    var name = "\(type)".componentsSeparatedByString(".")[1]
+    let name = "\(type)".componentsSeparatedByString(".")[0]
     classes.removeValueForKey("\(name)")
     arrayPropertyExtractors.removeValueForKey("\(name)")
   }
@@ -59,7 +58,7 @@ class ObjectExtractor {
   var classNames:[String] {
     get {
       var names = [String]()
-      for (className, extractor) in classes {
+      for (className, _) in classes {
         names.append(className)
       }
       
@@ -76,7 +75,7 @@ class ObjectExtractor {
   
   private var realm:Realm {
     get {
-      return Realm(path: realmPath)
+      return try! Realm(path: realmPath)
     }
   }
   
@@ -162,7 +161,7 @@ class ObjectExtractor {
   
   private func arrayToString(object: Object, name: String) -> RIAArrayProperty {
     var objects:[Object]?
-    for (className, extractor) in arrayPropertyExtractors {
+    for (_, extractor) in arrayPropertyExtractors {
       objects = extractor(object: object, name: name)
       if objects != nil {
         break
